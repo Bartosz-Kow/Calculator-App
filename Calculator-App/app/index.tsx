@@ -1,4 +1,5 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Index() {
   return (
@@ -12,17 +13,83 @@ export default function Index() {
       {/* Keypad */}
       <View style={styles.keypadContainer}>
         <View style={styles.row}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.buttonText}>🔆</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
             <Text style={styles.buttonText}>%</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.actionButton}>
             <Text style={styles.buttonText}>÷</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.buttonText}>X</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.row}>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>×</Text>
+            <Text style={styles.buttonText}>7</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>⌫</Text>
+            <Text style={styles.buttonText}>8</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>9</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.buttonText}>━</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.row}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>4</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>5</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>6</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.row}>
+          <View style={styles.lastRowContainer}>
+            <View style={styles.row}>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>1</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>2</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>3</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.row}>
+              <TouchableOpacity style={styles.actionButton}>
+                <Text style={styles.buttonText}>AC</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>0</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>.</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <TouchableOpacity>
+            <LinearGradient
+              colors={["#ED0E98", "#FE5A2D"]}
+              style={styles.equalButton}
+            >
+              <Text style={styles.equalButtonText}>=</Text>
+            </LinearGradient>
           </TouchableOpacity>
         </View>
       </View>
@@ -33,7 +100,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1c1c1c",
+    backgroundColor: "#212327",
     justifyContent: "space-between",
     padding: 20,
   },
@@ -59,7 +126,15 @@ const styles = StyleSheet.create({
   button: {
     width: 70,
     height: 70,
-    backgroundColor: "#333",
+    backgroundColor: "#2f3237",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 35,
+  },
+  actionButton: {
+    width: 70,
+    height: 70,
+    backgroundColor: "#ED0E98",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 35,
@@ -72,5 +147,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: 15,
+  },
+  equalButton: {
+    width: 70,
+    height: 150,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 35,
+    marginRight: 10,
+  },
+  equalButtonText: {
+    color: "#fff",
+    fontSize: 32,
+  },
+  lastRowContainer: {
+    flex: 1,
   },
 });
