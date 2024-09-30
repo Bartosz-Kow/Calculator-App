@@ -1,10 +1,10 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 
 export default function Index() {
   const [displayValue, setDisplayValue] = useState("0");
-  const [operator, setOperator] = useState(null);
+  const [operator, setOperator] = useState<string | null>(null);
   const [firstValue, setFirstValue] = useState("");
 
   const handleNumberInput = (num: number) => {
@@ -13,6 +13,32 @@ export default function Index() {
     } else {
       setDisplayValue(displayValue + num);
     }
+  };
+
+  const handleOperatorInput = (operator: string) => {
+    setOperator(operator);
+    setFirstValue(displayValue);
+    setDisplayValue("0");
+  };
+
+  const handleEquals = () => {
+    const num1 = parseFloat(firstValue);
+    const num2 = parseFloat(displayValue);
+
+    if (operator === "+") {
+      setDisplayValue((num1 + num2).toString());
+    } else if (operator === "━") {
+      setDisplayValue((num1 - num2).toString());
+    } else if (operator === "X") {
+      setDisplayValue((num1 * num2).toString());
+    } else if (operator === "÷") {
+      setDisplayValue((num1 / num2).toString());
+    } else if (operator === "%") {
+      setDisplayValue((num1 % num2).toString());
+    }
+
+    setOperator(null);
+    setFirstValue("");
   };
 
   const ClearAll = () => {
@@ -35,13 +61,22 @@ export default function Index() {
           <TouchableOpacity style={styles.actionButton}>
             <Text style={styles.buttonText}>🔆</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleOperatorInput("%")}
+          >
             <Text style={styles.buttonText}>%</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleOperatorInput("÷")}
+          >
             <Text style={styles.buttonText}>÷</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleOperatorInput("X")}
+          >
             <Text style={styles.buttonText}>X</Text>
           </TouchableOpacity>
         </View>
@@ -65,7 +100,10 @@ export default function Index() {
           >
             <Text style={styles.buttonText}>9</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleOperatorInput("━")}
+          >
             <Text style={styles.buttonText}>━</Text>
           </TouchableOpacity>
         </View>
@@ -89,7 +127,10 @@ export default function Index() {
           >
             <Text style={styles.buttonText}>6</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleOperatorInput("+")}
+          >
             <Text style={styles.buttonText}>+</Text>
           </TouchableOpacity>
         </View>
@@ -132,7 +173,7 @@ export default function Index() {
               </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleEquals}>
             <LinearGradient
               colors={["#ED0E98", "#FE5A2D"]}
               style={styles.equalButton}
