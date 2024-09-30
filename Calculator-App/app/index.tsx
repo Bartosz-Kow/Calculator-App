@@ -6,6 +6,8 @@ export default function Index() {
   const [displayValue, setDisplayValue] = useState("0");
   const [operator, setOperator] = useState<string | null>(null);
   const [firstValue, setFirstValue] = useState("");
+  const [history, setHistory] = useState("");
+  const MAX_HISTORY_LENGTH = 50;
 
   const handleNumberInput = (num: number) => {
     if (displayValue === "0") {
@@ -19,6 +21,13 @@ export default function Index() {
     setOperator(operator);
     setFirstValue(displayValue);
     setDisplayValue("0");
+    setHistory((prevHistory) => {
+      const newHistory = prevHistory + ` ${displayValue} ${operator}`;
+
+      return newHistory.length > MAX_HISTORY_LENGTH
+        ? newHistory.slice(newHistory.length - MAX_HISTORY_LENGTH)
+        : newHistory;
+    });
   };
 
   const handleEquals = () => {
@@ -36,7 +45,13 @@ export default function Index() {
     } else if (operator === "%") {
       setDisplayValue((num1 % num2).toString());
     }
+    setHistory((prevHistory) => {
+      const newHistory = prevHistory + ` ${displayValue} =`;
 
+      return newHistory.length > MAX_HISTORY_LENGTH
+        ? newHistory.slice(newHistory.length - MAX_HISTORY_LENGTH)
+        : newHistory;
+    });
     setOperator(null);
     setFirstValue("");
   };
@@ -45,13 +60,14 @@ export default function Index() {
     setDisplayValue("0");
     setOperator(null);
     setFirstValue("");
+    setHistory("");
   };
 
   return (
     <View style={styles.container}>
       {/* Display */}
       <View style={styles.displayContainer}>
-        <Text style={styles.historyText}>120 x 3 + 608 + 1080</Text>
+        <Text style={styles.historyText}>{history}</Text>
         <Text style={styles.resultText}>{displayValue}</Text>
       </View>
 
