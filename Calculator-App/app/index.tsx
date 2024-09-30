@@ -1,11 +1,19 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 
 export default function Index() {
   const [displayValue, setDisplayValue] = useState("0");
   const [operator, setOperator] = useState<string | null>(null);
   const [firstValue, setFirstValue] = useState("");
+  const [history, setHistory] = useState("");
+  const MAX_HISTORY_LENGTH = 50;
+
+  const [isLightMode, setIsLightMode] = useState(false);
+
+  const toggleTheme = () => {
+    setIsLightMode(!isLightMode);
+  };
 
   const handleNumberInput = (num: number) => {
     if (displayValue === "0") {
@@ -19,6 +27,12 @@ export default function Index() {
     setOperator(operator);
     setFirstValue(displayValue);
     setDisplayValue("0");
+    setHistory((prevHistory) => {
+      const newHistory = prevHistory + ` ${displayValue} ${operator}`;
+      return newHistory.length > MAX_HISTORY_LENGTH
+        ? newHistory.slice(newHistory.length - MAX_HISTORY_LENGTH)
+        : newHistory;
+    });
   };
 
   const handleEquals = () => {
@@ -37,6 +51,12 @@ export default function Index() {
       setDisplayValue((num1 % num2).toString());
     }
 
+    setHistory((prevHistory) => {
+      const newHistory = prevHistory + ` ${displayValue} =`;
+      return newHistory.length > MAX_HISTORY_LENGTH
+        ? newHistory.slice(newHistory.length - MAX_HISTORY_LENGTH)
+        : newHistory;
+    });
     setOperator(null);
     setFirstValue("");
   };
@@ -45,22 +65,30 @@ export default function Index() {
     setDisplayValue("0");
     setOperator(null);
     setFirstValue("");
+    setHistory("");
   };
 
+  const backgroundColor = isLightMode ? "#F0F0F0" : "#212327";
+  const buttonBackgroundColor = isLightMode ? "#E0E0E0" : "#2f3237";
+  const textColor = isLightMode ? "#000" : "#fff";
+
   return (
-    <View style={styles.container}>
-      {/* Display */}
+    <View style={[styles.container, { backgroundColor }]}>
       <View style={styles.displayContainer}>
-        <Text style={styles.historyText}>120 x 3 + 608 + 1080</Text>
-        <Text style={styles.resultText}>{displayValue}</Text>
+        <Text style={[styles.historyText, { color: textColor }]}>
+          {history}
+        </Text>
+        <Text style={[styles.resultText, { color: textColor }]}>
+          {displayValue}
+        </Text>
       </View>
 
-      {/* Keypad */}
       <View style={styles.keypadContainer}>
         <View style={styles.row}>
-          <TouchableOpacity style={styles.actionButton}>
-            <Text style={styles.buttonText}>🔆</Text>
+          <TouchableOpacity style={styles.actionButton} onPress={toggleTheme}>
+            <Text style={styles.buttonText}>{isLightMode ? "🌙" : "🔆"}</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.actionButton}
             onPress={() => handleOperatorInput("%")}
@@ -83,22 +111,22 @@ export default function Index() {
 
         <View style={styles.row}>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
             onPress={() => handleNumberInput(7)}
           >
-            <Text style={styles.buttonText}>7</Text>
+            <Text style={[styles.buttonText, { color: textColor }]}>7</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
             onPress={() => handleNumberInput(8)}
           >
-            <Text style={styles.buttonText}>8</Text>
+            <Text style={[styles.buttonText, { color: textColor }]}>8</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
             onPress={() => handleNumberInput(9)}
           >
-            <Text style={styles.buttonText}>9</Text>
+            <Text style={[styles.buttonText, { color: textColor }]}>9</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.actionButton}
@@ -110,22 +138,22 @@ export default function Index() {
 
         <View style={styles.row}>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
             onPress={() => handleNumberInput(4)}
           >
-            <Text style={styles.buttonText}>4</Text>
+            <Text style={[styles.buttonText, { color: textColor }]}>4</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
             onPress={() => handleNumberInput(5)}
           >
-            <Text style={styles.buttonText}>5</Text>
+            <Text style={[styles.buttonText, { color: textColor }]}>5</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, { backgroundColor: buttonBackgroundColor }]}
             onPress={() => handleNumberInput(6)}
           >
-            <Text style={styles.buttonText}>6</Text>
+            <Text style={[styles.buttonText, { color: textColor }]}>6</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.actionButton}
@@ -139,22 +167,31 @@ export default function Index() {
           <View style={styles.lastRowContainer}>
             <View style={styles.row}>
               <TouchableOpacity
-                style={styles.button}
+                style={[
+                  styles.button,
+                  { backgroundColor: buttonBackgroundColor },
+                ]}
                 onPress={() => handleNumberInput(1)}
               >
-                <Text style={styles.buttonText}>1</Text>
+                <Text style={[styles.buttonText, { color: textColor }]}>1</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.button}
+                style={[
+                  styles.button,
+                  { backgroundColor: buttonBackgroundColor },
+                ]}
                 onPress={() => handleNumberInput(2)}
               >
-                <Text style={styles.buttonText}>2</Text>
+                <Text style={[styles.buttonText, { color: textColor }]}>2</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.button}
+                style={[
+                  styles.button,
+                  { backgroundColor: buttonBackgroundColor },
+                ]}
                 onPress={() => handleNumberInput(3)}
               >
-                <Text style={styles.buttonText}>3</Text>
+                <Text style={[styles.buttonText, { color: textColor }]}>3</Text>
               </TouchableOpacity>
             </View>
 
@@ -163,13 +200,21 @@ export default function Index() {
                 <Text style={styles.buttonText}>AC</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.button}
+                style={[
+                  styles.button,
+                  { backgroundColor: buttonBackgroundColor },
+                ]}
                 onPress={() => handleNumberInput(0)}
               >
-                <Text style={styles.buttonText}>0</Text>
+                <Text style={[styles.buttonText, { color: textColor }]}>0</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>.</Text>
+              <TouchableOpacity
+                style={[
+                  styles.button,
+                  { backgroundColor: buttonBackgroundColor },
+                ]}
+              >
+                <Text style={[styles.buttonText, { color: textColor }]}>.</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -190,7 +235,6 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#212327",
     justifyContent: "space-between",
     padding: 20,
   },
@@ -201,11 +245,9 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   historyText: {
-    color: "#8888",
     fontSize: 18,
   },
   resultText: {
-    color: "#fff",
     fontSize: 48,
     fontWeight: "bold",
   },
@@ -216,7 +258,6 @@ const styles = StyleSheet.create({
   button: {
     width: 70,
     height: 70,
-    backgroundColor: "#2f3237",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 35,
@@ -230,7 +271,6 @@ const styles = StyleSheet.create({
     borderRadius: 35,
   },
   buttonText: {
-    color: "#fff",
     fontSize: 24,
   },
   row: {
